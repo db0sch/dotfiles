@@ -6,8 +6,10 @@
 	"installed_packages":
 	[
 		"AdvancedNewFile",
+		"All Autocomplete",
 		"ApplySyntax",
 		"Better CoffeeScript",
+		"BracketHighlighter",
 		"ColorPicker",
 		"DocBlockr",
 		"Emmet",
@@ -23,7 +25,6 @@
 		"SCSS",
 		"Seti_UI",
 		"Seti_UX",
-		"Theme - Soda",
 		"Themr"
 	]
 }
