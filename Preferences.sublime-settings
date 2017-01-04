@@ -1,32 +1,39 @@
 {
-  "detect_indentation": false,
-  "draw_white_space": true,
-  "ensure_newline_at_eof_on_save": true,
-  "folder_exclude_patterns":
-  [
-    "tmp",
-    "log",
-    ".git",
-    "_site",
-    ".bundle",
-    ".sass-cache",
-    "build"
-  ],
-  "highlight_modified_tabs": true,
-  "hot_exit": false,
-  "ignored_packages":
-  [
-    "Vintage"
-  ],
-  "remember_open_files": false,
-  "rulers":
-  [
-    80
-  ],
-  "tab_size": 2,
-  "translate_tabs_to_spaces": true,
-  "trim_automatic_white_space": true,
-  "trim_trailing_white_space_on_save": true,
-  "use_tab_stops": true,
-  "wordWrap": false
+	"color_scheme": "Packages/Seti_UX/Seti.tmTheme",
+	"detect_indentation": false,
+	"dpi_scale": 1.2,
+	"draw_white_space": true,
+	"ensure_newline_at_eof_on_save": true,
+	"folder_exclude_patterns":
+	[
+		"tmp",
+		"log",
+		".git",
+		"_site",
+		".bundle",
+		".sass-cache",
+		"build"
+	],
+	"font_size": 14,
+	"highlight_modified_tabs": true,
+	"hot_exit": false,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"line_padding_bottom": 3,
+	"line_padding_top": 3,
+	"remember_open_files": false,
+	"rulers":
+	[
+		80
+	],
+	"show_encoding": true,
+	"tab_size": 2,
+  "theme": "Seti_orig.sublime-theme",
+	"translate_tabs_to_spaces": true,
+	"trim_automatic_white_space": true,
+	"trim_trailing_white_space_on_save": true,
+	"use_tab_stops": true,
+	"wordWrap": false
 }
