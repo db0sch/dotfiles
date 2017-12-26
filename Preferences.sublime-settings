@@ -1,5 +1,5 @@
 {
-	"color_scheme": "Packages/Color Scheme - Default/Mariana.tmTheme",
+	"color_scheme": "Packages/Seti_UX/Seti.tmTheme",
 	"detect_indentation": false,
 	"dpi_scale": 1.2,
 	"draw_white_space": true,
@@ -12,9 +12,10 @@
 		"_site",
 		".bundle",
 		".sass-cache",
-		"build"
+		"build",
+		"node_modules"
 	],
-	"font_size": 14,
+	"font_size": 17,
 	"highlight_modified_tabs": true,
 	"hot_exit": false,
 	"ignored_packages":
@@ -28,9 +29,10 @@
 	[
 		80
 	],
+	"scroll_past_end": true,
 	"show_encoding": true,
 	"tab_size": 2,
-	"theme": "Seti_orig.sublime-theme",
+	"theme": "Seti.sublime-theme",
 	"translate_tabs_to_spaces": true,
 	"trim_automatic_white_space": true,
 	"trim_trailing_white_space_on_save": true,
