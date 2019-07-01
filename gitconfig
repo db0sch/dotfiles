@@ -48,4 +48,10 @@
   mergeoptions = --no-edit
 [user]
 	email = dimitribosch@hotmail.com
-	name = Dimitri Bosch
+	name = Dimitri
+
+[sendemail]
+	smtpserver = smtp.office365.com
+	smtpencryption = tls
+	smtpserverport = 587
+  smtpuser = dimitribosch@hotmail.com  

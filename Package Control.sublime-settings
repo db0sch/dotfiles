@@ -5,7 +5,6 @@
 	],
 	"installed_packages":
 	[
-		"A File Icon",
 		"AdvancedNewFile",
 		"All Autocomplete",
 		"ApplySyntax",
@@ -14,15 +13,16 @@
 		"BracketHighlighter",
 		"Color Highlighter",
 		"ColorPicker",
+		"DA UI",
 		"DocBlockr",
 		"Emmet",
 		"ERB Snippets",
 		"Flexbox Snippets",
 		"Git",
-		"GitGutter",
 		"Jekyll",
 		"JSX",
-		"Markdown Preview",
+		"Markdown Extended",
+		"MarkdownPreview",
 		"Material Theme",
 		"Package Control",
 		"React ES6 Snippets",
@@ -31,6 +31,9 @@
 		"SCSS",
 		"Seti_UI",
 		"Seti_UX",
+		"SublimeLinter",
+		"SublimeLinter-eslint",
+		"SublimeLinter-rubocop",
 		"Themr"
 	]
 }

@@ -18,7 +18,7 @@ source "${ZSH}/oh-my-zsh.sh"
 
 # Rails and Ruby uses the local `bin` folder to store binstubs.
 # So instead of running `bin/rails` like the doc says, just run `rails`
-export PATH="./bin:./node_modules/.bin:${PATH}:/usr/local/sbin"
+export PATH="./bin:/usr/local/bin:/usr/local/sbin:./node_modules/.bin:${PATH}"
 
 # Store your own aliases in the ~/.aliases file and load the here.
 [[ -f "$HOME/.aliases" ]] && source "$HOME/.aliases"
@@ -31,3 +31,7 @@ export BUNDLER_EDITOR="'/Applications/Sublime Text.app/Contents/SharedSupport/bi
 
 eval "$(rbenv init -)"
 
+export PATH="/usr/local/opt/icu4c/bin:$PATH"
+export PATH="/usr/local/opt/icu4c/sbin:$PATH"
+
+eval "$(nodenv init -)"
