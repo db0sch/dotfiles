@@ -48,7 +48,7 @@
   mergeoptions = --no-edit
 [user]
 	email = dimitribosch@hotmail.com
-	name = Dimitri
+	name = Dimitri Bosch
 
 [sendemail]
 	smtpserver = smtp.office365.com
