@@ -35,3 +35,4 @@ export PATH="/usr/local/opt/icu4c/bin:$PATH"
 export PATH="/usr/local/opt/icu4c/sbin:$PATH"
 
 eval "$(nodenv init -)"
+export BUNDLER_EDITOR="subl $@ >/dev/null 2>&1"
