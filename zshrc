@@ -61,3 +61,4 @@ load-nvmrc() {
 }
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
+export BUNDLER_EDITOR="subl $@ >/dev/null 2>&1"
