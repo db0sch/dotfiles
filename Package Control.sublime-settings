@@ -2,7 +2,6 @@
 	"bootstrapped": true,
 	"in_process_packages":
 	[
-		"DA UI"
 	],
 	"installed_packages":
 	[
@@ -14,7 +13,6 @@
 		"BracketHighlighter",
 		"Color Highlighter",
 		"ColorPicker",
-		"DA UI",
 		"DocBlockr",
 		"Emmet",
 		"ERB Snippets",
