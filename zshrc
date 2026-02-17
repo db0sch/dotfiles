@@ -1,72 +1,135 @@
 ZSH=$HOME/.oh-my-zsh
-
-# You can change the theme with another one from https://github.com/robbyrussell/oh-my-zsh/wiki/themes
-ZSH_THEME="robbyrussell"
-
-# Useful oh-my-zsh plugins for Le Wagon bootcamps
-plugins=(git gitfast last-working-dir common-aliases zsh-syntax-highlighting history-substring-search)
-
-# (macOS-only) Prevent Homebrew from reporting - https://github.com/Homebrew/brew/blob/master/docs/Analytics.md
-export HOMEBREW_NO_ANALYTICS=1
-
-# Disable warning about insecure completion-dependent directories
+ZSH_THEME="simple"
 ZSH_DISABLE_COMPFIX=true
 
-# Actually load Oh-My-Zsh
+# Plugins: zsh-syntax-highlighting must be last
+plugins=(git gitfast last-working-dir common-aliases history-substring-search zsh-autosuggestions zsh-syntax-highlighting)
+
 source "${ZSH}/oh-my-zsh.sh"
-unalias rm # No interactive rm by default (brought by plugins/common-aliases)
-unalias lt # we need `lt` for https://github.com/localtunnel/localtunnel
+unalias rm lt 2>/dev/null  # Remove unwanted aliases from common-aliases
 
-# Load rbenv if installed (to manage your Ruby versions)
-export PATH="${HOME}/.rbenv/bin:${PATH}" # Needed for Linux/WSL
-type -a rbenv > /dev/null && eval "$(rbenv init -)"
+# Consolidated PATH
+export PATH="./bin:./node_modules/.bin:${HOME}/.rbenv/bin:${HOME}/.bun/bin:${PATH}:/usr/local/sbin"
 
-# Load pyenv (to manage your Python versions)
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-type -a pyenv > /dev/null && eval "$(pyenv init -)" && eval "$(pyenv virtualenv-init - 2> /dev/null)" && RPROMPT+='[🐍 $(pyenv version-name)]'
-
-# Load nvm (to manage your node versions)
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# Call `nvm use` automatically in a directory with a `.nvmrc` file
-autoload -U add-zsh-hook
-load-nvmrc() {
-  if nvm -v &> /dev/null; then
-    local node_version="$(nvm version)"
-    local nvmrc_path="$(nvm_find_nvmrc)"
-
-    if [ -n "$nvmrc_path" ]; then
-      local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-      if [ "$nvmrc_node_version" = "N/A" ]; then
-        nvm install
-      elif [ "$nvmrc_node_version" != "$node_version" ]; then
-        nvm use --silent
-      fi
-    elif [ "$node_version" != "$(nvm version default)" ]; then
-      nvm use default --silent
-    fi
-  fi
-}
-type -a nvm > /dev/null && add-zsh-hook chpwd load-nvmrc
-type -a nvm > /dev/null && load-nvmrc
-
-# Rails and Ruby uses the local `bin` folder to store binstubs.
-# So instead of running `bin/rails` like the doc says, just run `rails`
-# Same for `./node_modules/.bin` and nodejs
-export PATH="./bin:./node_modules/.bin:${PATH}:/usr/local/sbin"
-
-# Store your own aliases in the ~/.aliases file and load the here.
-[[ -f "$HOME/.aliases" ]] && source "$HOME/.aliases"
-
-# Encoding stuff for the terminal
+# Environment variables
+export HOMEBREW_NO_ANALYTICS=1
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-
-export BUNDLER_EDITOR=code
-export EDITOR=code
-
-# Set ipdb as the default Python debugger
+export EDITOR=zed
+export BUNDLER_EDITOR=zed
+export RAILS_EDITOR=zed
 export PYTHONBREAKPOINT=ipdb.set_trace
+export BUN_INSTALL="$HOME/.bun"
+export LEDGER_FILE=~/finance/main.journal
+
+# rbenv
+type -a rbenv > /dev/null && eval "$(rbenv init -)"
+
+# Tool initializations
+[ -s "/Users/dbo/.bun/_bun" ] && source "/Users/dbo/.bun/_bun"
+eval "$(mise activate zsh)"
+eval "$(/opt/homebrew/bin/try init ~/src/tries)"
+
+# Aliases
+alias zzz='zed .'
+[[ -f "$HOME/.aliases" ]] && source "$HOME/.aliases"
+
+# Get the main repo root (works from main or any worktree)
+_ccw_main_root() {
+  local git_common_dir=$(git rev-parse --git-common-dir 2>/dev/null)
+  if [[ -z "$git_common_dir" ]]; then
+    return 1
+  fi
+  # git-common-dir is either ".git" (from main) or absolute path to main's .git (from worktree)
+  if [[ "$git_common_dir" == ".git" ]]; then
+    git rev-parse --show-toplevel
+  else
+    dirname "$git_common_dir"
+  fi
+}
+
+# Create or jump to a worktree (no args = list)
+ccw() {
+  local branch_name="$1"
+  local main_root=$(_ccw_main_root)
+
+  if [[ -z "$main_root" ]]; then
+    echo "Error: Not in a git repository"
+    return 1
+  fi
+
+  local worktrees_dir="${main_root}_worktrees"
+
+  # No args = list
+  if [[ -z "$branch_name" ]]; then
+    echo "Worktrees:"
+    git worktree list
+    return 0
+  fi
+
+  local worktree_path="$worktrees_dir/$branch_name"
+
+  # If exists, jump to it
+  if [[ -d "$worktree_path" ]]; then
+    cd "$worktree_path"
+    echo "Switched to: $branch_name"
+    return 0
+  fi
+
+  # Create new worktree (only from main repo)
+  local git_dir=$(git rev-parse --git-dir 2>/dev/null)
+  local git_common_dir=$(git rev-parse --git-common-dir 2>/dev/null)
+
+  if [[ "$git_dir" != "$git_common_dir" ]]; then
+    echo "Error: Worktree '$branch_name' doesn't exist. Create from main repo."
+    return 1
+  fi
+
+  mkdir -p "$worktrees_dir"
+
+  if ! git worktree add -b "$branch_name" "$worktree_path"; then
+    echo "Error: Failed to create worktree"
+    return 1
+  fi
+
+  if [[ -f "$main_root/config/master.key" ]]; then
+    ln -s "$main_root/config/master.key" "$worktree_path/config/master.key"
+    echo "Linked master.key"
+  fi
+
+  mise trust "$worktree_path"
+  cd "$worktree_path"
+
+  echo "Created: $branch_name"
+}
+
+# Go back to main repo
+ccw-() {
+  local main_root=$(_ccw_main_root)
+
+  if [[ -z "$main_root" ]]; then
+    echo "Error: Not in a git repository"
+    return 1
+  fi
+
+  cd "$main_root"
+}
+
+# Remove a worktree
+ccwrm() {
+  local branch_name="$1"
+
+  if [[ -z "$branch_name" ]]; then
+    echo "Usage: ccwrm <branch-name>"
+    return 1
+  fi
+
+  local main_root=$(_ccw_main_root)
+  local worktree_path="${main_root}_worktrees/$branch_name"
+
+  if [[ "$PWD" == "$worktree_path"* ]]; then
+    cd "$main_root"
+  fi
+
+  git worktree remove "$worktree_path" && echo "Removed: $branch_name"
+}

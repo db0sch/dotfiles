@@ -1,5 +1,13 @@
-// Place your key bindings in this file to override the defaults
+// Place your key bindings in this file to override the defaultsauto[]
 [
+  {
+    "key": "cmd+v",
+    "command": "execPaste"
+  },
+  {
+    "key": "cmd+v",
+    "command": "-execPaste"
+  },
   {
     "key": "ctrl+shift+v",
     "command": "pasteAndIndent.action",
@@ -9,5 +17,9 @@
     "key": "cmd+shift+v",
     "command": "pasteAndIndent.action",
     "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "cmd+i",
+    "command": "composerMode.agent"
   }
 ]
