@@ -32,6 +32,7 @@ eval "$(/opt/homebrew/bin/try init ~/src/tries)"
 
 # Aliases
 alias zzz='zed .'
+alias lg='lazygit'
 [[ -f "$HOME/.aliases" ]] && source "$HOME/.aliases"
 
 # Get the main repo root (works from main or any worktree)
@@ -87,9 +88,16 @@ ccw() {
 
   mkdir -p "$worktrees_dir"
 
-  if ! git worktree add -b "$branch_name" "$worktree_path"; then
-    echo "Error: Failed to create worktree"
-    return 1
+  if git show-ref --verify --quiet "refs/heads/$branch_name"; then
+    if ! git worktree add "$worktree_path" "$branch_name"; then
+      echo "Error: Failed to create worktree"
+      return 1
+    fi
+  else
+    if ! git worktree add -b "$branch_name" "$worktree_path"; then
+      echo "Error: Failed to create worktree"
+      return 1
+    fi
   fi
 
   if [[ -f "$main_root/config/master.key" ]]; then
@@ -99,6 +107,11 @@ ccw() {
 
   mise trust "$worktree_path"
   cd "$worktree_path"
+
+  # Repo hook: its own database, port and host (checkmate: bin/worktree)
+  if [[ -x bin/worktree ]]; then
+    bin/worktree setup
+  fi
 
   echo "Created: $branch_name"
 }
@@ -131,5 +144,20 @@ ccwrm() {
     cd "$main_root"
   fi
 
+  # Repo hook: drop the worktree's databases, but only if git will remove it
+  if [[ -x "$worktree_path/bin/worktree" ]]; then
+    if [[ -n "$(git -C "$worktree_path" status --porcelain)" ]]; then
+      echo "Error: '$branch_name' has uncommitted changes"
+      return 1
+    fi
+    (cd "$worktree_path" && bin/worktree teardown) || return 1
+  fi
+
   git worktree remove "$worktree_path" && echo "Removed: $branch_name"
 }
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/dbo/code/aktadocs/rncp-rs-skills/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/dbo/code/aktadocs/rncp-rs-skills/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/dbo/code/aktadocs/rncp-rs-skills/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/dbo/code/aktadocs/rncp-rs-skills/google-cloud-sdk/completion.zsh.inc'; fi
