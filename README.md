@@ -21,7 +21,6 @@ installs the zsh plugins, adds the SSH key to the macOS keychain and reloads the
 | `zsh/worktrees.zsh` | sourced by `zshrc` | `ccw` git worktree helpers                        |
 | `aliases`           | `~/.aliases`       | Small extra aliases (`myip`, `speedtest`, `serve`) |
 | `gitconfig`         | `~/.gitconfig`     | Git aliases, colors, identity                     |
-| `rspec`             | `~/.rspec`         | RSpec defaults                                    |
 | `config`            | `~/.ssh/config`    | SSH: keychain + default key                       |
 
 ## Worktree helpers

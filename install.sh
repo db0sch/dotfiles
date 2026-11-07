@@ -23,7 +23,7 @@ symlink() {
 
 # For each `$name` below, backup the target file located at `~/.$name`
 # and symlink `$name` to `~/.$name`
-for name in aliases gitconfig rspec zprofile zshenv zshrc; do
+for name in aliases gitconfig zprofile zshenv zshrc; do
   if [ ! -d "$name" ]; then
     target="$HOME/.$name"
     backup $target

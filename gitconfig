@@ -1,10 +1,3 @@
-[color]
-  branch = auto
-  diff = auto
-  interactive = auto
-  status = auto
-  ui = auto
-
 [color "branch"]
   current = green
   remote = yellow
@@ -20,7 +13,6 @@
   ci = commit
   fo = fetch origin
   d = !git --no-pager diff
-  dt  = difftool
   stat = !git --no-pager diff --stat
 
   # Set remotes/origin/HEAD -> defaultBranch (copied from https://stackoverflow.com/a/67672350/14870317)
@@ -35,10 +27,6 @@
   # http://www.jukie.net/bart/blog/pimping-out-git-log
   lg = log --graph --all --pretty=format:'%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)%an%Creset %C(yellow)%d%Creset'
 
-  # Serve local repo. http://coderwall.com/p/eybtga
-  # Then other can access via `git clone git://#{YOUR_IP_ADDRESS}/
-  serve = !git daemon --reuseaddr --verbose  --base-path=. --export-all ./.git
-
   # Checkout to defaultBranch
   m = !git checkout $(git defaultBranch)
 
@@ -46,13 +34,7 @@
   unstage = reset HEAD --
 
 [help]
-  autocorrect = 1
-
-[push]
-  default = simple
-
-[branch "master"]
-  mergeoptions = --no-edit
+  autocorrect = prompt  # ask before running the guessed command for a typo
 
 [pull]
   rebase = false
