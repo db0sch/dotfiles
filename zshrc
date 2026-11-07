@@ -20,7 +20,6 @@ export LC_ALL=en_US.UTF-8
 export EDITOR="zed --wait"  # --wait: block until the file is closed (rails credentials:edit, etc.)
 export BUNDLER_EDITOR=zed
 export RAILS_EDITOR=zed
-export LEDGER_FILE=~/finance/main.journal
 
 # Tool initializations
 eval "$(mise activate zsh)"
